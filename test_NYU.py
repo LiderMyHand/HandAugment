@@ -22,9 +22,9 @@ def unit_test(args):
     net = torch.nn.DataParallel(net)
 
     print('prepare test center')
-    prepare_centers_uvd_from_raw(centers='/HandAugment_method/HandAugment/cache/NYU/nyu_center_test.mat',
-                        dst_path='/HandAugment_method/HandAugment/cache/NYU/test_center_uvd.txt')
-    center_list_path = 'cache/NYU/test_center_uvd.txt'
+#     prepare_centers_uvd_from_raw(centers='/HandAugment_method/HandAugment/cache/NYU/nyu_center_test.mat',
+#                         dst_path='HandAugment_method/HandAugment/cache/NYU/joint_mat/test_center_uvd.txt')
+    center_list_path = '/HandAugment_method/HandAugment/cache/NYU/test_center_uvd.txt'
 
     print('start test')
     file_name_list = [line.split()[0] for line in open(center_list_path, 'r').readlines()]
@@ -32,6 +32,7 @@ def unit_test(args):
     
     
     test_dataset = NYUTestDataset(center_list_path, input_test_img_folder)
+    
     
     
     
@@ -72,7 +73,7 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output_result_path', type=str, default='result/result.txt',
                         help='Output path of result.txt')
     parser.add_argument('-i', '--input_test_img_folder', type=str,
-                        default='/HandAugment_method/HandAugment/dataset/NYU',
+                        default='/HandAugment_method/HandAugment/dataset/NYU/test_data_mat',
                         help='test set image folder')
     parser.add_argument('--gpu_id', type=str, default='0', help='use specific gpu')
     parser.add_argument('--batch_size', type=int, default=32, help='batch_size')
@@ -85,11 +86,5 @@ if __name__ == '__main__':
         sys.exit(0)
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu_id
     unit_test(args)
-
-center_list_path = 'cache/NYU/test_center_uvd.txt'
-
-file_name_list = [line.split()[0] for line in open(center_list_path, 'r').readlines()]
-
-file_name_list
 
 

@@ -6,11 +6,13 @@ import numpy as np
 import re
 import scipy.io as scio
 from .util import crop_image
+import scipy.io as scio
+from natsort import natsorted
 
 img_w = 640
 img_h = 480
 fx = 588.03
-fy = -587.07
+fy = 587.07
 ppx = 320
 ppy = 240
 cube_len = 150
@@ -40,6 +42,7 @@ class NYUTestDataset(torch.utils.data.Dataset):
             crop_param = np.array(center, dtype=np.float32)
             return data, crop_param
         img_crop = crop_image(img_depth, center, cube_len, fx, fy, self.crop_width, self.crop_height)
+#         img_crop = img_crop/(255.0/1000.0)-1.0
         data = torch.from_numpy(
             np.asarray(img_crop, dtype=np.float32).reshape(channel, self.crop_height, self.crop_width))
         crop_param = np.array(center, dtype=np.float32)
@@ -57,9 +60,9 @@ def prepare_centers_uvd_from_raw(centers='/HandAugment_method/HandAugment/cache/
     
     lines  = scio.loadmat(centers)['centre_pixel'].astype(np.float32)
 
-    filelist= [file for file in os.listdir('/HandAugment_method/HandAugment/dataset/NYU') 
-               if file.endswith('.png') and re.search("^depth_2", file)]
-
+    filelist= [file for file in os.listdir('/HandAugment_method/HandAugment/dataset/NYU/test_data_mat') 
+               if file.endswith('.png')]
+    filelist = natsorted(filelist)
     os.makedirs(os.path.dirname(dst_path), exist_ok=True)
     fo = open(dst_path, 'w')
 
@@ -70,9 +73,3 @@ def prepare_centers_uvd_from_raw(centers='/HandAugment_method/HandAugment/cache/
             fo.write(file)
             fo.writelines(center_str)
             fo.write('\n') 
-
-
-
-
-
-

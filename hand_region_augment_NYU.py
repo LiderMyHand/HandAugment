@@ -37,7 +37,7 @@ def hand_region_augment(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='hand region augment')
     parser.add_argument('--joint_list_path', type=str, default='output/result/result.txt', help='Input model')
-    parser.add_argument('--img_base', type=str, default='dataset/NYU',
+    parser.add_argument('--img_base', type=str, default='/HandAugment_method/HandAugment/dataset/NYU/test_data_mat',
                         help='test set image folder')
     parser.add_argument('--dst_dir', type=str, default='cache/NYU/test_images_augment', help='out put folder')
     parser.add_argument('--verbose', '-v', action='count', default=0)
